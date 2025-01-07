@@ -10,16 +10,20 @@ body {
     align-items: center;
     height: 100vh;
     border: dotted black 5px;
+    padding: 10vh 5vw;
+    gap: 2vh;
+}
 
-}
-#grid-size {
-    padding: 10%;
-}
 #container {
     width: 90%;
-    max-width: 90vh;
+    max-width: 80vh;
     aspect-ratio: 1/1;
+    align-items: center;
     
+}
+#grid-size {
+    align-self: center;
+    padding: 10px;
 }
 #edge {
     background-color: red;
