@@ -5,33 +5,44 @@
 }
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    border: dotted black 5px;
+
+}
+#grid-size {
+    padding: 10%;
 }
 #container {
     width: 90%;
     max-width: 90vh;
     aspect-ratio: 1/1;
-    background-color: red;
+    
 }
-#sketcher {
-    /* justify-self: center;
-    align-self: center; */
+#edge {
+    background-color: red;
+    padding: 6%;
+}
+
+#sketch-area {
+    background-color: white;
     width: 100%;
     aspect-ratio: 1/1;
-    padding: 10%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .square {
     flex: 1;
-    aspect-ratio: 1/1;
-    background-color: white;
-    border: dotted black 1px;
+    aspect-ratio: 1 / 1;
+    opacity: 0;
 }
 
-.rowBreak {
+
+.row-break {
+    height: 0;
     flex-basis: 100%;
 }
