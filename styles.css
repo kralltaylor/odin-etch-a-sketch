@@ -1,0 +1,37 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+#container {
+    width: 90%;
+    max-width: 90vh;
+    aspect-ratio: 1/1;
+    background-color: red;
+}
+#sketcher {
+    /* justify-self: center;
+    align-self: center; */
+    width: 100%;
+    aspect-ratio: 1/1;
+    padding: 10%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.square {
+    flex: 1;
+    aspect-ratio: 1/1;
+    background-color: white;
+    border: dotted black 1px;
+}
+
+.rowBreak {
+    flex-basis: 100%;
+}
