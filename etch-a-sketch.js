@@ -4,8 +4,16 @@ container.style.padding = (container.width / 10);
 const sketchArea = document.querySelector('#sketch-area');
 
 const changeGrid = document.querySelector('#grid-size');
+const rainbowButton = document.querySelector('#rainbow-mode');
+const resetButton = document.querySelector('#reset');
+const eraser = document.querySelector('#eraser-mode');
+
+
 
 let size = 16;
+let rainbowMode = false;
+let eraserMode = false;
+let isMouseDown = false;
 let squares = [];
 
 createGrid();
@@ -38,29 +46,68 @@ function createGrid () {
 }
 
 
-
+sketchArea.addEventListener("mousedown", (e) => {
+    const choice = e.target;
+    isMouseDown = true;
+    if(eraserMode){
+        erase(choice);
+    } else {
+        updateSquareColor(choice);
+    } 
+});
 sketchArea.addEventListener('mouseover', (e) => {
     const choice = e.target;
-    const choiceStyle = getComputedStyle(choice)
-    if (!choice.classList.contains('row-break') && choice.classList.contains('square')) {
-        if (!choice.classList.contains('has-color')){
-            const newColor = Math.floor(Math.random()*16777215).toString(16);
-            choice.style.backgroundColor = "#" + newColor;
-            choice.classList.toggle('has-color');
-        }
-        const currentOpacity = choiceStyle.opacity;
-        console.log(currentOpacity);
-        const newOpacity = ((parseFloat(currentOpacity) + .2));
-        console.log(newOpacity);
+    if (isMouseDown){
+        if(eraserMode){
+            erase(choice);
+        } else {
+            updateSquareColor(choice);
+        } 
+    }
     
-        choice.style.opacity = newOpacity;
-    }  
-    
+});
+sketchArea.addEventListener("mouseup", () => {
+    isMouseDown = false;
 });
 
 changeGrid.addEventListener('click', (e) => {
     changeGridSize();
 });
+
+function updateSquareColor(targetSquare) {
+    
+    const targetStyle = getComputedStyle(targetSquare)
+    if (!targetSquare.classList.contains('row-break') && targetSquare.classList.contains('square')) {
+        if (rainbowMode === true && !targetSquare.classList.contains('has-color')){
+            const newColor = Math.floor(Math.random()*16777215).toString(16);
+            targetSquare.style.backgroundColor = "#" + newColor;
+            targetSquare.classList.toggle('has-color');
+        }
+        else {
+            targetSquare.style.backgroundColor = "black";
+            if (targetSquare.classList.contains('has-color')){
+                targetSquare.classList.toggle('has-color');
+            }
+        }
+        const currentOpacity = targetStyle.opacity;
+        const newOpacity = ((parseFloat(currentOpacity) + .2));
+    
+        targetSquare.style.opacity = newOpacity;
+    }  
+}
+
+function erase(targetSquare) {
+    
+    const targetStyle = getComputedStyle(targetSquare);
+    if (!targetSquare.classList.contains('row-break') && targetSquare.classList.contains('square')) {
+        targetSquare.style.backgroundColor = "white";
+        if (targetSquare.classList.contains('has-color')){
+            targetSquare.classList.toggle('has-color');
+        }
+        targetSquare.style.opacity = 0.1;
+    }
+    
+}
 
 function changeGridSize (){
     let newsize = "";
@@ -81,3 +128,28 @@ function changeGridSize (){
         }
     } while (!Number.isInteger(newSize) || (newSize <= 0) || (newSize > 100))
 }
+
+rainbowButton.addEventListener('click', (e) => {
+    if(eraserMode){
+        eraser.classList.toggle('eraser-active');
+        eraserMode = !eraserMode;
+    }
+    rainbowButton.classList.toggle('rainbow-active');
+    rainbowMode = !rainbowMode;
+});
+
+resetButton.addEventListener('click', (e) => {
+    for (i = 0; i < squares.length; i++) {
+        squares[i].style.opacity = 0;
+        
+        }
+});
+
+eraser.addEventListener('click', (e) => {
+    if (rainbowMode){
+        rainbowButton.classList.toggle('rainbow-active');
+        rainbowMode = !rainbowMode;
+    }
+    eraser.classList.toggle('eraser-active');
+    eraserMode = !eraserMode;
+});

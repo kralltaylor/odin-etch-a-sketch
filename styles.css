@@ -9,7 +9,6 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    border: dotted black 5px;
     padding: 10vh 5vw;
     gap: 2vh;
 }
@@ -19,30 +18,73 @@ body {
     max-width: 80vh;
     aspect-ratio: 1/1;
     align-items: center;
-    
+    box-shadow: 5px 5px 5px black;
+    border-radius: 25px;
+
 }
-#grid-size {
+
+#button-container {
+    display: flex;
+    gap: 20px;
+    max-width: 80vw;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+button {
     align-self: center;
     padding: 10px;
+    box-shadow: 3px 3px 5px black;
+    border: solid 3px black;
+    border-radius: 10px;
+    color: black;
+    transition-duration: 0.2s;
 }
+button:hover {
+    background-color: #bebebe;
+    box-shadow: 5px 5px 5px black;
+}
+button:active {
+    transform: translate(1px,1px);
+}
+.rainbow-active {
+    background-color: rgb(77, 122, 247);
+    border: solid 3px red;
+    color: white;
+}
+.eraser-active {
+    background-color: rgb(53, 53, 53);
+    border: solid 3px rgb(214, 214, 214);
+    color: white;
+}
+.rainbow-active:hover {
+    background-color: rgb(62, 98, 199);
+  }
 #edge {
-    background-color: red;
+    background-color: rgb(209, 2, 2);
     padding: 6%;
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px black;
+
 }
 
 #sketch-area {
-    background-color: white;
+    padding: 5px;
+    background-color: rgb(245, 245, 245);
     width: 100%;
     aspect-ratio: 1/1;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    box-shadow: inset 3px 3px 5px black;
+
 }
 
 .square {
     flex: 1;
     aspect-ratio: 1 / 1;
-    opacity: 0;
+    opacity: 0.1;
+    border: solid 2px rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
 }
 
 
