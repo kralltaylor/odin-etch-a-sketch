@@ -78,16 +78,12 @@ function updateSquareColor(targetSquare) {
     
     const targetStyle = getComputedStyle(targetSquare)
     if (!targetSquare.classList.contains('row-break') && targetSquare.classList.contains('square')) {
-        if (rainbowMode === true && !targetSquare.classList.contains('has-color')){
+        if (rainbowMode === true){    
             const newColor = Math.floor(Math.random()*16777215).toString(16);
             targetSquare.style.backgroundColor = "#" + newColor;
-            targetSquare.classList.toggle('has-color');
         }
         else {
             targetSquare.style.backgroundColor = "black";
-            if (targetSquare.classList.contains('has-color')){
-                targetSquare.classList.toggle('has-color');
-            }
         }
         const currentOpacity = targetStyle.opacity;
         const newOpacity = ((parseFloat(currentOpacity) + .2));
@@ -101,9 +97,6 @@ function erase(targetSquare) {
     const targetStyle = getComputedStyle(targetSquare);
     if (!targetSquare.classList.contains('row-break') && targetSquare.classList.contains('square')) {
         targetSquare.style.backgroundColor = "white";
-        if (targetSquare.classList.contains('has-color')){
-            targetSquare.classList.toggle('has-color');
-        }
         targetSquare.style.opacity = 0.1;
     }
     
