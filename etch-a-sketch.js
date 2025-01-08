@@ -15,6 +15,7 @@ let rainbowMode = false;
 let eraserMode = false;
 let isMouseDown = false;
 let squares = [];
+let rowCount = 0;
 
 createGrid();
 
@@ -24,25 +25,55 @@ createGrid();
 function createGrid () {
     sketchArea.innerHTML = '';
     squares = [];
-    for (i = 0; i < (size * size); i++) {
-        squares.push(document.createElement('div'));
-    }
-    
-    
-    for (i = 0; i < squares.length; i++) {
-        squares[i].id = `square${i+1}`;
-        squares[i].className = 'square';
-        squares[i].style.flex = `1 0 ${(1/size) * 100}%`;
-        if (((i +1) % size) !== 0){
-            sketchArea.appendChild(squares[i]);
-        } else {
-            sketchArea.appendChild(squares[i]);
-            const rowBreak = document.createElement('div');
-            rowBreak.className = 'row-break';
-            sketchArea.appendChild(rowBreak);
+    for (r = 0; r < size; r++) {
+        let tempRow = document.createElement('div');
+        tempRow.id = `row-${r+1}`;  
+        tempRow.className = 'row';
+        for (i = 0; i < size; i++) {
+            let tempSquare = document.createElement('div');
+            tempSquare.id = `square-${r+1}-${i+1}`;
+            tempSquare.className = 'square';
+
+            //Create shadows on squares around the edge
+            if (tempSquare.id == 'square-1-1'){
+                tempSquare.style.boxShadow = 'inset 2px 2px 1px black';
+            } else if (tempSquare.id.includes(`e-1-`) && tempSquare.id.includes(`-${size}`)) {
+                tempSquare.style.boxShadow = 'inset -2px 2px 1px black';
+            } else if (tempSquare.id.includes(`e-${size}-`) && tempSquare.id.endsWith(`-1`)) {
+                tempSquare.style.boxShadow = 'inset 2px -2px 1px black';
+            } else if (tempSquare.id.includes(`e-${size}-`) && tempSquare.id.endsWith(`-${size}`)) {
+                tempSquare.style.boxShadow = 'inset -2px -2px 1px black';
+            } else if (tempSquare.id.includes(`e-1-`)) {
+                tempSquare.style.boxShadow = 'inset 0 2px 1px 0 black';
+            } else if (tempSquare.id.endsWith(`-1`)) {
+                tempSquare.style.boxShadow = 'inset 2px 0px 1px 0 black';
+            } else if (tempSquare.id.endsWith(`-${size}`)) {
+                tempSquare.style.boxShadow = 'inset -2px 0px 1px 0 black';
+            } else if (tempSquare.id.includes(`e-${size}-`)) {
+                tempSquare.style.boxShadow = 'inset 0px -2px 1px 0 black';
+            } else {
+                tempSquare.style.boxShadow = 'inset 0 0 1px 0 black';
+            }
+            // tempSquare.style.flex = `1 0 ${(1/size) * 100}%`;
+            tempRow.appendChild(tempSquare);
         }
+        sketchArea.appendChild(tempRow)
+    }   
+    
+    // for (i = 0; i < squares.length; i++) {
+    //     squares[i].id = `square${i+1}`;
+    //     squares[i].className = 'square';
+    //     squares[i].style.flex = `1 0 ${(1/size) * 100}%`;
+    //     if (((i +1) % size) !== 0){
+    //         sketchArea.appendChild(squares[i]);
+    //     } else {
+    //         sketchArea.appendChild(squares[i]);
+    //         const rowBreak = document.createElement('div');
+    //         rowBreak.className = 'row-break';
+    //         sketchArea.appendChild(rowBreak);
+    //     }
         
-    }
+    // }
 }
 
 
