@@ -96,16 +96,11 @@ sketchArea.addEventListener("touchend", () => {
     isTouch = false;
 });
 
-
-changeGrid.addEventListener('click', (e) => {
-    changeGridSize();
-});
-
 sizeSlider.addEventListener('input', () => {
     size = sizeSlider.value;
     gridSize.textContent = sizeSlider.value;
     createGrid();
-})
+});
 
 function updateSquareColor(targetSquare) {
     
@@ -146,26 +141,6 @@ function erase(targetSquare) {
         targetSquare.style.opacity = 0.1;
     }
     
-}
-
-function changeGridSize (){
-    let newsize = "";
-    do {
-        newSize = prompt("How many squares per side? (1 to 100)");
-        if (newSize == null){
-            return;
-        }
-        console.log(typeof(newSize));
-        newSize = parseInt(newSize);
-        console.log(newSize);
-        if (Number.isInteger(newSize) && newSize > 0 && newSize <= 100) {
-            size = newSize;
-            createGrid();
-        }
-        else {
-            alert("Invalid input. Please enter a number from 1 to 100.");
-        }
-    } while (!Number.isInteger(newSize) || (newSize <= 0) || (newSize > 100))
 }
 
 rainbowButton.addEventListener('click', (e) => {
