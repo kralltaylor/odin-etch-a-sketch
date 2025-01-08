@@ -20,7 +20,6 @@ body {
     max-height: 100%;
     padding: 5vh 5vw;
     gap: 2vh;
-    border: dotted 2px black;
     flex-basis: 0;
 
 }
