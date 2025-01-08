@@ -1,25 +1,26 @@
-const container = document.querySelector('#container');
-container.style.padding = (container.width / 10);
+const sketchContainer = document.querySelector('#sketch-container');
+sketchContainer.style.padding = (sketchContainer.width / 10);
 
 const sketchArea = document.querySelector('#sketch-area');
 
-const changeGrid = document.querySelector('#grid-size');
 const rainbowButton = document.querySelector('#rainbow-mode');
 const resetButton = document.querySelector('#reset');
 const eraser = document.querySelector('#eraser-mode');
+const gridSize = document.querySelector('#grid-size');
+const sizeSlider = document.querySelector('#size-slider');
 
 
 
 let size = 16;
+gridSize.textContent = size;
 let rainbowMode = false;
 let eraserMode = false;
 let isMouseDown = false;
+let isTouch = false;
 let squares = [];
 let rowCount = 0;
 
 createGrid();
-
-
 
 
 function createGrid () {
@@ -33,47 +34,11 @@ function createGrid () {
             let tempSquare = document.createElement('div');
             tempSquare.id = `square-${r+1}-${i+1}`;
             tempSquare.className = 'square';
-
-            //Create shadows on squares around the edge
-            if (tempSquare.id == 'square-1-1'){
-                tempSquare.style.boxShadow = 'inset 2px 2px 1px black';
-            } else if (tempSquare.id.includes(`e-1-`) && tempSquare.id.includes(`-${size}`)) {
-                tempSquare.style.boxShadow = 'inset -2px 2px 1px black';
-            } else if (tempSquare.id.includes(`e-${size}-`) && tempSquare.id.endsWith(`-1`)) {
-                tempSquare.style.boxShadow = 'inset 2px -2px 1px black';
-            } else if (tempSquare.id.includes(`e-${size}-`) && tempSquare.id.endsWith(`-${size}`)) {
-                tempSquare.style.boxShadow = 'inset -2px -2px 1px black';
-            } else if (tempSquare.id.includes(`e-1-`)) {
-                tempSquare.style.boxShadow = 'inset 0 2px 1px 0 black';
-            } else if (tempSquare.id.endsWith(`-1`)) {
-                tempSquare.style.boxShadow = 'inset 2px 0px 1px 0 black';
-            } else if (tempSquare.id.endsWith(`-${size}`)) {
-                tempSquare.style.boxShadow = 'inset -2px 0px 1px 0 black';
-            } else if (tempSquare.id.includes(`e-${size}-`)) {
-                tempSquare.style.boxShadow = 'inset 0px -2px 1px 0 black';
-            } else {
-                tempSquare.style.boxShadow = 'inset 0 0 1px 0 black';
-            }
-            // tempSquare.style.flex = `1 0 ${(1/size) * 100}%`;
             tempRow.appendChild(tempSquare);
         }
         sketchArea.appendChild(tempRow)
     }   
     
-    // for (i = 0; i < squares.length; i++) {
-    //     squares[i].id = `square${i+1}`;
-    //     squares[i].className = 'square';
-    //     squares[i].style.flex = `1 0 ${(1/size) * 100}%`;
-    //     if (((i +1) % size) !== 0){
-    //         sketchArea.appendChild(squares[i]);
-    //     } else {
-    //         sketchArea.appendChild(squares[i]);
-    //         const rowBreak = document.createElement('div');
-    //         rowBreak.className = 'row-break';
-    //         sketchArea.appendChild(rowBreak);
-    //     }
-        
-    // }
 }
 
 
@@ -97,37 +62,87 @@ sketchArea.addEventListener('mouseover', (e) => {
     }
     
 });
+
 sketchArea.addEventListener("mouseup", () => {
     isMouseDown = false;
 });
+
+//Touch listeners for mobile
+sketchArea.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    const choice = e.target;
+    
+    isTouch = true;
+    if(eraserMode){
+        erase(choice);
+    } else {
+        updateSquareColor(choice);
+    } 
+});
+sketchArea.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    // const choice = e.target;  
+    let choice = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    if (isTouch){
+        if(eraserMode){
+            erase(choice);
+        } else {
+            updateSquareColor(choice);
+        } 
+    }
+    
+});
+sketchArea.addEventListener("touchend", () => {
+    isTouch = false;
+});
+
 
 changeGrid.addEventListener('click', (e) => {
     changeGridSize();
 });
 
+sizeSlider.addEventListener('input', () => {
+    size = sizeSlider.value;
+    gridSize.textContent = sizeSlider.value;
+    createGrid();
+})
+
 function updateSquareColor(targetSquare) {
     
     const targetStyle = getComputedStyle(targetSquare)
     if (!targetSquare.classList.contains('row-break') && targetSquare.classList.contains('square')) {
-        if (rainbowMode === true){    
-            const newColor = Math.floor(Math.random()*16777215).toString(16);
-            targetSquare.style.backgroundColor = "#" + newColor;
-        }
-        else {
+        if (rainbowMode === true){  
+            if (!checkHasColor(targetSquare)){
+                targetSquare.classList.toggle('has-color');
+                const newColor = Math.floor(Math.random()*16777215).toString(16);
+                targetSquare.style.backgroundColor = "#" + newColor;      
+            }
+        } else {
+            if (checkHasColor(targetSquare)){
+                targetSquare.classList.toggle('has-color');
+            }
             targetSquare.style.backgroundColor = "black";
         }
         const currentOpacity = targetStyle.opacity;
-        const newOpacity = ((parseFloat(currentOpacity) + .2));
+        const newOpacity = ((parseFloat(currentOpacity) + .10));
     
         targetSquare.style.opacity = newOpacity;
     }  
+}
+
+function checkHasColor(targetSquare) {
+    if (targetSquare.classList.contains('has-color')){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function erase(targetSquare) {
     
     const targetStyle = getComputedStyle(targetSquare);
     if (!targetSquare.classList.contains('row-break') && targetSquare.classList.contains('square')) {
-        targetSquare.style.backgroundColor = "white";
+        targetSquare.style.removeProperty('background-color');
         targetSquare.style.opacity = 0.1;
     }
     
