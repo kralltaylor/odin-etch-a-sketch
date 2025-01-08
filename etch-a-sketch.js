@@ -153,10 +153,7 @@ rainbowButton.addEventListener('click', (e) => {
 });
 
 resetButton.addEventListener('click', (e) => {
-    for (i = 0; i < squares.length; i++) {
-        squares[i].style.opacity = 0;
-        
-        }
+    createGrid();
 });
 
 eraser.addEventListener('click', (e) => {
