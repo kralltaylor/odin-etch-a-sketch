@@ -107,14 +107,14 @@ function updateSquareColor(targetSquare) {
     const targetStyle = getComputedStyle(targetSquare)
     if (!targetSquare.classList.contains('row-break') && targetSquare.classList.contains('square')) {
         if (rainbowMode === true){  
-            if (!checkHasColor(targetSquare)){
-                targetSquare.classList.toggle('has-color');
+            if (!checkhasRainbow(targetSquare)){
+                targetSquare.classList.toggle('has-rainbow');
                 const newColor = Math.floor(Math.random()*16777215).toString(16);
                 targetSquare.style.backgroundColor = "#" + newColor;      
             }
         } else {
-            if (checkHasColor(targetSquare)){
-                targetSquare.classList.toggle('has-color');
+            if (checkhasRainbow(targetSquare)){
+                targetSquare.classList.toggle('has-rainbow');
             }
             targetSquare.style.backgroundColor = "black";
         }
@@ -125,8 +125,8 @@ function updateSquareColor(targetSquare) {
     }  
 }
 
-function checkHasColor(targetSquare) {
-    if (targetSquare.classList.contains('has-color')){
+function checkhasRainbow(targetSquare) {
+    if (targetSquare.classList.contains('has-rainbow')){
         return true;
     } else {
         return false;
@@ -136,9 +136,12 @@ function checkHasColor(targetSquare) {
 function erase(targetSquare) {
     
     const targetStyle = getComputedStyle(targetSquare);
-    if (!targetSquare.classList.contains('row-break') && targetSquare.classList.contains('square')) {
+    if (targetSquare.classList.contains('square')) {
         targetSquare.style.removeProperty('background-color');
         targetSquare.style.opacity = 0.1;
+        if(targetSquare.classList.contains('has-rainbow')){
+            targetSquare.classList.toggle('has-rainbow');
+        }
     }
     
 }
